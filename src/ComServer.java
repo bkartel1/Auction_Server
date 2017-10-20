@@ -96,7 +96,7 @@ public class ComServer extends Thread {
                                 stocklistGUI.additems(); //adding item to server view
                             } else {
                                  //when there is no symbol this quit
-                                writer.print("-1");
+                                writer.print("-1\n");
                                 writer.flush();
                                  this.connection.close();
                                  break;
@@ -123,7 +123,7 @@ public class ComServer extends Thread {
     }
     private boolean quit(String line){
         //checking the line=quit
-        if( line.equals("quit") || line.equals(null)){
+        if( line.equals("quit") ){
             loopval=false;
             return true;
         }else return false;

@@ -38,8 +38,8 @@ public class StockStore {
     }
 
     public boolean searchKeyAvailable(String key) throws NullPointerException{
-        stockDB =(StockDB)stocklist.get(key);
-        if(stockDB.getSecurityName().equals(null))return false;
+
+        if(!stocklist.containsKey(key))return false;
         else return true;
     }
 
@@ -59,7 +59,4 @@ public class StockStore {
         return stockDB.getSecurityName();
     }
 
-    public synchronized HashMap getStocklist() {
-        return stocklist;
     }
-}
