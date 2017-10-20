@@ -32,7 +32,7 @@ public class ComServer extends Thread {
         this.bidHistory=bidHistory;
         this.connection=connection;
         this.state=s0;//new user mode
-        stocklistGUI=new StocklistGUI(stockStore,bidHistory);
+        stocklistGUI=new StocklistGUI(stockStore,bidHistory); //creating server stock view
         this.stockStore=stockStore;
 
         clientInfo =new ClientInfo("NoOne");
@@ -57,14 +57,14 @@ public class ComServer extends Thread {
             while(loopval) {
 
                 if (state == s0) {
+                    //initiali client is set to noone as defult and change state
                     if (clientInfo.getClientname().equals("NoOne")) {
                         writer.print("Enter Name: \n");
                         writer.flush();
-                        System.out.println("noone");
                         line=reader.readLine();
                         if(quit(line))break;
                         name = line;
-                        System.out.println(name);
+                        System.out.println(name+" Registered");
                         clientInfo = new ClientInfo(name);
                         writer.print(clientInfo.getClientname()+ " Registered\n");
                         state = s1;
@@ -73,7 +73,7 @@ public class ComServer extends Thread {
 
                 }
                     else if (state == s1) {
-                        System.out.println(symbol);
+                        //default symbol is set to NO
                         if (symbol.equals("NO")) {
                             writer.print("Enter Symbol: \n");
                             writer.flush();
@@ -81,23 +81,21 @@ public class ComServer extends Thread {
                             if(quit(line))break;
                             symbol = line.toUpperCase();
                         } else if (!symbol.isEmpty()) {
-
+                            //when there is valid symbol
                              if(stockStore.searchKeyAvailable(symbol)){
-
-
                                 cost = stockStore.getPrice(symbol);
                                 writer.print(symbol + " Price: " + cost);
-                                 writer.flush();
-                                System.out.println(this.currentThread()+" "+cost+" before");
-                                writer.print(name+"\nEnter Price to bid: ");
+                                writer.flush();
+                                writer.print("\nEnter Price to bid: ");
                                 writer.flush();
                                 line=reader.readLine();
                                 if(quit(line))break;
                                 bidcost = Float.parseFloat(line);
                                 stockStore.setPrice(symbol,bidcost);
                                 bidHistory.setbidHistory(symbol,clientInfo,bidcost);
-                                stocklistGUI.additems();
+                                stocklistGUI.additems(); //adding item to server view
                             } else {
+                                 //when there is no symbol this quit
                                 writer.print("-1");
                                 writer.flush();
                                  this.connection.close();
@@ -124,6 +122,7 @@ public class ComServer extends Thread {
 
     }
     private boolean quit(String line){
+        //checking the line=quit
         if( line.equals("quit") || line.equals(null)){
             loopval=false;
             return true;

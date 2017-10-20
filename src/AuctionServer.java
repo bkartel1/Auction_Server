@@ -32,7 +32,6 @@ public class AuctionServer {
             comServer=new ComServer(socket,stockStore,bidHistory);
             comServer.start();
             comServer.sleep(1);
-            System.out.println(comServer.getName()+" running");
 
         }
 
@@ -42,7 +41,7 @@ public class AuctionServer {
        try{
            //starting server
            AuctionServer auctionServer=new AuctionServer(PORT);
-           stockStore=new StockStore("D:\\UoP\\Programming\\Java\\Project 2-Stock Exchange\\src\\stocks.csv");
+           stockStore=new StockStore("stocks.csv");
             bidHistory=new BidHistory();
            auctionServer.loopServer(stockStore);
        }catch (IOException e){
